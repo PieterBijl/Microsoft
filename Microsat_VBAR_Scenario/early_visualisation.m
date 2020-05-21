@@ -1,5 +1,8 @@
 clear;
-clc
+clc;
+
+Eul_0_tar_RW = [-170;30;-80]; %deg (initial Euler angles)
+w_0_tar_RW = [-0.0873;-0.1489;0.0262]; %rad/s (angular velocity)
 
 data = table2array(readtable('features_data.txt'));
 
@@ -9,7 +12,7 @@ f1 = figure;
 for i = 1:16
     plot(data(:,i),data(:,i+1))
     hold on
-    plot(data(1,i),data(1,i+1),'r*')
+    plot(data(2,i),data(2,i+1),'r*')
 end
 title('Visualisation of the 16 features in x and y over time')
 xlabel('x') 
