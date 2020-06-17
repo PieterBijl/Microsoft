@@ -1,0 +1,8 @@
+**Voeg hier je ideëen toe die handig/nice zijn voor implementat**
+
+**Pieter: voeg tic; toc; toe in matlab om te checken hoe lang het duurt om een simulatie te runnen,
+microsats hebben geen goede processoren dus het kan zijn dat wat lukt op een laptop niet kan
+in een satelliet. Het kan bijvoorbeeld zijn dat measurements maar 1 keer per 2 seconden geprocessed
+kunnen worden. Dit laat goed zien dat we ook de toepassing snappen.
+**
+
