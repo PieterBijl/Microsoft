@@ -32,7 +32,7 @@ fprintf('\n---------EPnP--------------\n');
 load_points=0;
 if ~load_points
     n=16; %number of points
-    std_noise=1; %noise in the measurements (in pixels)
+    std_noise=0; %noise in the measurements (in pixels)
     [A,point,Rt]=generate_noisy_input_data(n,std_noise);
     save('data\input_data_noise.mat','A','point','Rt');
 else
@@ -72,5 +72,4 @@ xlim([-2 2]); ylim([-2 2]);
 %compute error
 error=reprojection_error_usingRT(Xw,U,Rp,Tp,A);
 fprintf('error EPnP: %.3f\n',error);
-
 

@@ -1,4 +1,4 @@
-function  Ximg=project_3d_2d(A,Xcam)
+function dsq=define_distances_btw_control_points()
 
 % Copyright (C) <2007>  <Francesc Moreno-Noguer, Vincent Lepetit, Pascal Fua>
 % 
@@ -16,9 +16,18 @@ function  Ximg=project_3d_2d(A,Xcam)
 % Francesc Moreno-Noguer, CVLab-EPFL, September 2007.
 % fmorenoguer@gmail.com, http://cvlab.epfl.ch/~fmoreno/ 
 
-Xcam_h=[Xcam;1];
 
-Ximg_h=A*Xcam_h
+%relative coordinates of the control points
+c1=[1,0,0];
+c2=[0,1,0];
+c3=[0,0,1];
+c4=[0,0,0];
 
-Ximg(1,1)=Ximg_h(1)/Ximg_h(3)
-Ximg(2,1)=Ximg_h(2)/Ximg_h(3)
+d12=(c1(1)-c2(1))^2 + (c1(2)-c2(2))^2 + (c1(3)-c2(3))^2;
+d13=(c1(1)-c3(1))^2 + (c1(2)-c3(2))^2 + (c1(3)-c3(3))^2;
+d14=(c1(1)-c4(1))^2 + (c1(2)-c4(2))^2 + (c1(3)-c4(3))^2;
+d23=(c2(1)-c3(1))^2 + (c2(2)-c3(2))^2 + (c2(3)-c3(3))^2;
+d24=(c2(1)-c4(1))^2 + (c2(2)-c4(2))^2 + (c2(3)-c4(3))^2;
+d34=(c3(1)-c4(1))^2 + (c3(2)-c4(2))^2 + (c3(3)-c4(3))^2;
+
+dsq=[d12,d13,d14,d23,d24,d34]';

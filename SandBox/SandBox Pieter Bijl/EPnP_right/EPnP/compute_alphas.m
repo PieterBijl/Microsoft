@@ -1,5 +1,7 @@
-function  Ximg=project_3d_2d(A,Xcam)
+function Alph=compute_alphas(Xw,Cw)
 
+% COMPUTE_ALPHAS Barycentric coordinates computation
+%
 % Copyright (C) <2007>  <Francesc Moreno-Noguer, Vincent Lepetit, Pascal Fua>
 % 
 % This program is free software: you can redistribute it and/or modify
@@ -16,9 +18,14 @@ function  Ximg=project_3d_2d(A,Xcam)
 % Francesc Moreno-Noguer, CVLab-EPFL, September 2007.
 % fmorenoguer@gmail.com, http://cvlab.epfl.ch/~fmoreno/ 
 
-Xcam_h=[Xcam;1];
 
-Ximg_h=A*Xcam_h
+n=size(Xw,1); %number of 3d points
 
-Ximg(1,1)=Ximg_h(1)/Ximg_h(3)
-Ximg(2,1)=Ximg_h(2)/Ximg_h(3)
+%generate auxiliar matrix to compute alphas
+C=[Cw';ones(1,4)];
+X=[Xw';ones(1,n)];
+Alph_=inv(C)*X;
+
+
+
+Alph=Alph_';

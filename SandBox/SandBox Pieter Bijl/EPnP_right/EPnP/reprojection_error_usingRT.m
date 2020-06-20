@@ -1,4 +1,4 @@
-function  Ximg=project_3d_2d(A,Xcam)
+function [err,Urep]=reprojection_error_usingRT(Xw,U,R,T,A)
 
 % Copyright (C) <2007>  <Francesc Moreno-Noguer, Vincent Lepetit, Pascal Fua>
 % 
@@ -16,9 +16,22 @@ function  Ximg=project_3d_2d(A,Xcam)
 % Francesc Moreno-Noguer, CVLab-EPFL, September 2007.
 % fmorenoguer@gmail.com, http://cvlab.epfl.ch/~fmoreno/ 
 
-Xcam_h=[Xcam;1];
 
-Ximg_h=A*Xcam_h
+n=size(Xw,1);
 
-Ximg(1,1)=Ximg_h(1)/Ximg_h(3)
-Ximg(2,1)=Ximg_h(2)/Ximg_h(3)
+P=A*[R,T];
+Xw_h=[Xw,ones(n,1)];
+Urep_=(P*Xw_h')';
+
+
+%project reference points into the image plane
+Urep=zeros(n,2);
+Urep(:,1)=Urep_(:,1)./Urep_(:,3);
+Urep(:,2)=Urep_(:,2)./Urep_(:,3);
+
+
+%reprojection error
+err_=sqrt((U(:,1)-Urep(:,1)).^2+(U(:,2)-Urep(:,2)).^2);
+err=sum(err_)/n;
+
+

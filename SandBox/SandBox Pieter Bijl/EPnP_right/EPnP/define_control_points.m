@@ -1,4 +1,4 @@
-function  Ximg=project_3d_2d(A,Xcam)
+function Cw=define_control_points()
 
 % Copyright (C) <2007>  <Francesc Moreno-Noguer, Vincent Lepetit, Pascal Fua>
 % 
@@ -16,9 +16,7 @@ function  Ximg=project_3d_2d(A,Xcam)
 % Francesc Moreno-Noguer, CVLab-EPFL, September 2007.
 % fmorenoguer@gmail.com, http://cvlab.epfl.ch/~fmoreno/ 
 
-Xcam_h=[Xcam;1];
-
-Ximg_h=A*Xcam_h
-
-Ximg(1,1)=Ximg_h(1)/Ximg_h(3)
-Ximg(2,1)=Ximg_h(2)/Ximg_h(3)
+Cw=[1 0 0;
+    0 1 0;
+    0 0 1;
+    0 0 0];
