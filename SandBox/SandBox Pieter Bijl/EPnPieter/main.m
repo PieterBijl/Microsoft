@@ -22,21 +22,16 @@
 
 clear all; close all;
 
-addpath data;
-addpath error;
-addpath EPnP;
-
-
 fprintf('\n---------EPnP--------------\n');
 %1.-Generate simulated input data------------------------------------------
 load_points=0;
 if ~load_points
     n=16; %number of points
-    std_noise=10; %noise in the measurements (in pixels)
+    std_noise=5; %noise in the measurements (in pixels)
     [A,point,Rt]=generate_noisy_input_data(std_noise);
-%    save('data\input_data_noise.mat','A','point','Rt');
+   % save('\input_data_noise.mat','A','point','Rt');
 else
-%    load('data\input_data_noise.mat','A','point','Rt');
+   % load('\input_data_noise.mat','A','point','Rt');
     n=size(point,2);
     draw_noisy_input_data(point);
 end

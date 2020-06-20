@@ -1,4 +1,4 @@
-function [A,point,Rt]=generate_noisy_input_data(std_noise,draw_plot)
+function [A,point,Rt]=generate_noisy_input_data(n,std_noise,draw_plot)
 
 % Copyright (C) <2007>  <Francesc Moreno-Noguer, Vincent Lepetit, Pascal Fua>
 % 
@@ -17,66 +17,45 @@ function [A,point,Rt]=generate_noisy_input_data(std_noise,draw_plot)
 % fmorenoguer@gmail.com, http://cvlab.epfl.ch/~fmoreno/ 
 
 if nargin<3 draw_plot=''; end
-feature_data = importdata('features_data.txt'); %in pixels
-feature_points = 1/100*importdata('feature_points.txt'); %in meters
-
-%% Transform the feature_points
-alpha=-170*(180/pi);
-beta=30*(180/pi);
-gamma=-80*(180/pi);
-
-R(1,1)=cos(alpha)*cos(gamma)-cos(beta)*sin(alpha)*sin(gamma);
-R(2,1)=cos(gamma)*sin(alpha)+cos(alpha)*cos(beta)*sin(gamma);
-R(3,1)=sin(beta)*sin(gamma);
-
-R(1,2)=-cos(beta)*cos(gamma)*sin(alpha)-cos(alpha)*sin(gamma);
-R(2,2)=cos(alpha)*cos(beta)*cos(gamma)-sin(alpha)*sin(gamma);
-R(3,2)=cos(gamma)*sin(beta);
-
-R(1,3)=sin(alpha)*sin(beta);
-R(2,3)=-cos(alpha)*sin(beta);
-R(3,3)=cos(beta);
-feature_points_transformed = zeros(3,16);
-
-for i=1:16
-    feature_points_transformed(:,i) = R*feature_points(:,i);
-end
-
-feature_points_transformed = feature_points_transformed;
-
-
-n = length(feature_data(1,:))/2;
+    
 %true 3d position of the points--------------
 xini=-2; xend=2;%bounds 
 yini=-2; yend=2;
 zini=4; zend=9;
 
 %intrinsic camera parameters------------------
-fx=354.5; %focal length in pixels
-fy=354.5; 
+fx=354.4; %focal length in pixels
+fy=354.4; 
 f=3.9*10^-3; %50 mm of focal length
-fx/f
-%m = fx/f%;1.1*10^-5;%fx/f;
-m=1; %f=1; %<<<<<<----------------------------
+
+%m=fx/f
+m=1; f=1; %<<<<<<----------------------------
+pixel_size = 0.2037
 
 u0=256; v0=256;
 width=512; height=512;
-A=[fx/(fx/f) 0 u0/(fx/f) 0; 0 fy/(fx/f) v0/(fx/f) 0; 0 0 1 0];
-std_noise=std_noise*1.1*10^-5;  
+A=[fx/m 0 u0/m 0; 0 fy/m v0/m 0; 0 0 1 0];
+std_noise=std_noise*(1/m);
 
+%% Retrieve data from wireframe model
+feature_points = 1/100*importdata('feature_points.txt'); %in meters
+
+alpha=-170/(180/pi);
+beta=30/(180/pi);
+gamma=-80/(180/pi);
+R = [cos(alpha)*cos(beta) cos(alpha)*sin(beta)*sin(gamma)-sin(alpha)*cos(gamma) cos(alpha)*sin(beta)*cos(gamma)+sin(alpha)*sin(gamma);
+     sin(alpha)*cos(beta) sin(alpha)*sin(beta)*sin(gamma)+cos(alpha)*cos(gamma) sin(alpha)*sin(beta)*cos(gamma)-cos(alpha)*sin(gamma);
+     -sin(beta) cos(beta)*sin(gamma) cos(beta)*cos(gamma)];
 i=1;
 while i<=n
-    point(i).Xcam(1,1)=feature_points_transformed(1,i);
-    point(i).Xcam(2,1)=feature_points_transformed(2,i);
-    point(i).Xcam(3,1)=feature_points_transformed(3,i);
+    point(i).Xcam=R*feature_points(:,i);
     
     %project points into the image plane
-    point(i).Ximg_true(1) = feature_data(1,2*i-1)*1.1*10^-5;%project_3d_2d(A,point(i).Xcam);
-    point(i).Ximg_true(2) = feature_data(1,2*i)*1.1*10^-5;
+    point(i).Ximg_true=project_3d_2d(A,point(i).Xcam);
     point(i).Ximg_true(3)=f;
    
     %coordinates in pixels
-    point(i).Ximg_pix_true=point(i).Ximg_true(1:2)/(1.1*10^-5);    
+    point(i).Ximg_pix_true=point(i).Ximg_true(1:2)*pixel_size;    
     
    %check if the point is into the limits of the image
    uv=point(i).Ximg_pix_true;
@@ -94,7 +73,7 @@ for i=1:n
     point(i).Ximg(3,1)=f;
     
     %noisy coordinates in pixels
-    point(i).Ximg_pix=point(i).Ximg(1:2)/(1.1*10^-5);
+    point(i).Ximg_pix=point(i).Ximg(1:2)*pixel_size;
     
 end
     
@@ -109,10 +88,10 @@ centroid=centroid/n;
 
 
 
-x_rotation=-170*(180/pi);
-y_rotation=30*(180/pi);
-z_rotation=-80*(180/pi);
-tx=0; ty=0; tz=150;
+x_rotation=random(0,45,1)*pi/180;
+y_rotation=random(0,45,1)*pi/180;
+z_rotation=random(0,45,1)*pi/180;
+tx=0; ty=0; tz=0;
 Rt=return_Rt_matrix(x_rotation,y_rotation,z_rotation,tx,ty,tz);
 for i=1:n
    point(i).Xworld=transform_3d(Rt,point(i).Xcam-centroid); 
