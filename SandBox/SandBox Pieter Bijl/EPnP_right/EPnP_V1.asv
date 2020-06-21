@@ -8,7 +8,7 @@ n = length(feature_points);
 timestep = 1; % Choose the timestep that that you want to use
 datapoints = feature_data(timestep,:);
 wireframe = feature_points;
-std_noise = 0;
+std_noise = 1;
 [x3d_h,x2d_h,A] = data_prep(wireframe,datapoints,std_noise);
 [R,T,Xc,best_solution]=efficient_pnp(x3d_h,x2d_h,A);
 
@@ -33,11 +33,11 @@ end
 alpha=-170/(180/pi);
 beta=30/(180/pi);
 gamma=-80/(180/pi);
-R_ver1 = [cos(alpha)*cos(beta) cos(alpha)*sin(beta)*sin(gamma)-sin(alpha)*cos(gamma) cos(alpha)*sin(beta)*cos(gamma)+sin(alpha)*sin(gamma);
+R_ver = [cos(alpha)*cos(beta) cos(alpha)*sin(beta)*sin(gamma)-sin(alpha)*cos(gamma) cos(alpha)*sin(beta)*cos(gamma)+sin(alpha)*sin(gamma);
      sin(alpha)*cos(beta) sin(alpha)*sin(beta)*sin(gamma)+cos(alpha)*cos(gamma) sin(alpha)*sin(beta)*cos(gamma)-cos(alpha)*sin(gamma);
      -sin(beta) cos(beta)*sin(gamma) cos(beta)*cos(gamma)];
 for i=1:n
-   intermediate_points = R_ver1*feature_points(:,i);
+   intermediate_points = R_ver*feature_points;
    ver_data(i,:) = 1.1*10^-5*(intermediate_points(1:2)/0.2037+256); 
 end
 

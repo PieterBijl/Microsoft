@@ -46,10 +46,12 @@ gamma=-80/(180/pi);
 R = [cos(alpha)*cos(beta) cos(alpha)*sin(beta)*sin(gamma)-sin(alpha)*cos(gamma) cos(alpha)*sin(beta)*cos(gamma)+sin(alpha)*sin(gamma);
      sin(alpha)*cos(beta) sin(alpha)*sin(beta)*sin(gamma)+cos(alpha)*cos(gamma) sin(alpha)*sin(beta)*cos(gamma)-cos(alpha)*sin(gamma);
      -sin(beta) cos(beta)*sin(gamma) cos(beta)*cos(gamma)];
+%R = [-0.919710330222596,0.387101221901194,-0.0654641312815352;0.0189455003845006,-0.122790941983528,-0.992251708278691;-0.392140251054421,-0.913824397009294,0.105598271451644];
+
 i=1;
 while i<=n
-    point(i).Xcam=R*feature_points(:,i);
-    point(i).Xcam(3) = point(i).Xcam(3) + 150;
+    point(i).Xcam=R*feature_points(:,i)+[0; 0; 150];%+[0.149207531029831;-0.110772209024433;79.2442870387998];
+%    point(i).Xcam(3) = point(i).Xcam(3) + 78.9896515521566;
     %project points into the image plane
     intermediate_points = R*feature_points(:,i);
     point(i).Ximg_true=project_3d_2d(A,point(i).Xcam);
