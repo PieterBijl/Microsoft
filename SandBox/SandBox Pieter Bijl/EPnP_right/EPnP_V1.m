@@ -11,7 +11,6 @@ wireframe = feature_points;
 std_noise = 0;
 [x3d_h,x2d_h,A] = data_prep(wireframe,datapoints,std_noise);
 [R,T,Xc,best_solution]=efficient_pnp(x3d_h,x2d_h,A);
-
 A_new = zeros(3,4);
 A_new(1:3,1:3) = A;
 
@@ -38,10 +37,13 @@ R_ver1 = [cos(alpha)*cos(beta) cos(alpha)*sin(beta)*sin(gamma)-sin(alpha)*cos(ga
      -sin(beta) cos(beta)*sin(gamma) cos(beta)*cos(gamma)];
 for i=1:n
    intermediate_points = R_ver1*feature_points(:,i);
-   ver_data(i,:) = 1.1*10^-5*(intermediate_points(1:2)/0.2037+256); 
+   ver_data(i,:) = (intermediate_points(1:2)/0.2037+256);
+   ver_data_altered(i,1) = 0.5*ver_data(i,1)+128;
+   ver_data_altered(i,2) = 0.5*ver_data(i,2)+128;
+   ver_data_altered(i,:) = 1.1*10^-5*ver_data_altered(i,:);
 end
 
-x2d_h_ver = ver_data;
+x2d_h_ver = ver_data_altered;
 x2d_h_ver(:,3) = 1;
 [R_ver,T_ver,Xc_ver,best_solution_ver]=efficient_pnp(x3d_h,x2d_h_ver,A);
 %% Use iterative method to correct for 2D/3D issues
