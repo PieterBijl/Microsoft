@@ -36,7 +36,7 @@ for i=1:n
    point(i).model(3) = feature_points(3,i);
    point(i).model_modified = R*feature_points(:,i);
    point(i).model_modified_pix = point(i).model_modified/pixel_size;
-   point(i).model_modified_pix_true = point(i).model_modified_pix(1:2)+centroid_pix;
+   model_modified_pix_true(i,:) = point(i).model_modified_pix(1:2)+centroid_pix;
 end
 
 %% Do Plotting
@@ -57,5 +57,5 @@ subplot(3,1,3);
 title('wireframe model rotated in pixels')
 hold on;
 for i=1:n
-    plot(point(i).model_modified_pix_true(1),point(i).model_modified_pix_true(2),'.','color',[1 0 0]);
+    plot(model_modified_pix_true(i,1),model_modified_pix_true(i,2),'.','color',[1 0 0]);
 end
