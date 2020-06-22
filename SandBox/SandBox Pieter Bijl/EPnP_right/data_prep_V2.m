@@ -1,4 +1,4 @@
-function [x3d_h,x2d_h,A] = data_prep(wireframe,datapoints,std_noise)
+function [x3d_h,x2d_h,A] = data_prep_V2(wireframe,datapoints,std_noise)
     % The input:
     % Wireframe should be in meters
     % Datapoints are in pixels
@@ -21,7 +21,7 @@ function [x3d_h,x2d_h,A] = data_prep(wireframe,datapoints,std_noise)
     n = length(wireframe); % Should be 16
     for i=1:n
         x3d_h(i,:)=[wireframe(:,i)', 1]; % feature points
-        img_data = [datapoints(1,2*i-1), datapoints(1,2*i)];
+        img_data = [0.5*datapoints(1,2*i-1)+128, 0.5*datapoints(1,2*i)+128];
 %        img_data(1) = img_data(1)*0.940892149;
 %        img_data(2) = img_data(2)*0.991784747;
         noise=randn(1,2)*std_noise;
