@@ -45,7 +45,7 @@ fi_cw = [dr ; dv];
 x_pos(:,i+1) = fi_cw*x_pos(:,i);
 
 %kinematic Euler equations
-dth(:,i) = [1 sin(th(1,i))*tan(th(2,i)) cos(th(1,i))*tan(th(2,i)) ; 0 cos(th(1,i)) -sin(th(1,i)) ; 0 sin(th(1,i))/cos(th(2,i)) cos(th(1,i))/cos(th(2,i))] * w + n * [sin(th(3,i))/cos(th(2,i)) ; cos(th(3,i)) ; tan(th(2,i))*sin(th(3,i))]; 
+dth(:,i) = [1 sin(th(1,i))*tan(th(2,i)) cos(th(1,i))*tan(th(2,i)) ; 0 cos(th(1,i)) -sin(th(1,i)) ; 0 sin(th(1,i))/cos(th(2,i)) cos(th(1,i))/cos(th(2,i))] * w; %+ n * [sin(th(3,i))/cos(th(2,i)) ; cos(th(3,i)) ; tan(th(2,i))*sin(th(3,i))]; 
 th(:,i+1) = th(:,i) + dth(:,i)*dt;
 
 x_att(:,i+1) = [th(:,i+1) ; w];
@@ -62,7 +62,7 @@ thq_4(i) = cos(th(1,i)/2)*cos(th(2,i)/2)*cos(th(3,i)/2)+sin(th(1,i)/2)*sin(th(2,
 thq(:,i) = [thq_1(i) ; thq_2(i) ; thq_3(i) ; thq_4(i)];
 
 %kinematic quaternion equations
-dq(:,i) =  [0 w(3) -w(2) w(1) ; -w(3) 0 w(1) w(2) ; w(2) -w(1) 0 w(3) ; -w(1) -w(2) -w(3) 0]*q(:,i)/2 + n * [q(3,i) ; q(4,i) ; -q(1,i) ; -q(2,i)]/2;
+dq(:,i) =  [0 w(3) -w(2) w(1) ; -w(3) 0 w(1) w(2) ; w(2) -w(1) 0 w(3) ; -w(1) -w(2) -w(3) 0]*q(:,i)/2;% + n * [q(3,i) ; q(4,i) ; -q(1,i) ; -q(2,i)]/2;
 q(:,i+1) = q(:,i) + dq(:,i)*dt;
 
 dqc1(:,i) =  [qc1(4,i) -qc1(3,i) qc1(2,i) qc1(1,i) ; qc1(3,i) qc1(4,i) -qc1(1,i) qc1(2,i) ; -qc1(2,i) qc1(1,i) qc1(4,i) qc1(3,i) ; -qc1(1,i) -qc1(2,i) -qc1(3,i) qc1(4,i)]*[w ; 0]/2 + n * [q(3,i) ; q(4,i) ; -q(1,i) ; -q(2,i)]/2;
