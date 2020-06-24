@@ -3,7 +3,7 @@ clear all;
 addpath EPnP;
 addpath Jacobian
 
-std_noise = 0;
+std_noise = 3;
 feature_data = importdata('features_data.txt'); %in pixels
 feature_points = 1/100*importdata('feature_points.txt'); %in meters
 
