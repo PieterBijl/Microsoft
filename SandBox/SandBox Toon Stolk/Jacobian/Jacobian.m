@@ -1,7 +1,7 @@
 % The Jacobian Matrix H with dimension [2n x 13]
 
 test_state = [-0.115163657344148,0.242879180561813,154.640374787836, 0, 0, 0, -0.701226945952288,0.646905610017730,0.219920983077943,0.203540323277840, 0, 0, 0];
-Jacobian1(16, test_state, 3.9e-3, 3.9e-3)
+Jacobian_test = Jacobian1(16, test_state, 3.9e-3, 3.9e-3)
 
 function J = Jacobian1(n, state_vector, fx, fy)
     
