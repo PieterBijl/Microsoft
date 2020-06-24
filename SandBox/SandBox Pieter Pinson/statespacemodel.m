@@ -30,7 +30,7 @@ q_4 = cos(th(1)/2)*cos(th(2)/2)*cos(th(3)/2)+sin(th(1)/2)*sin(th(2)/2)*sin(th(3)
 q = [q_1 ; q_2 ; q_3 ; q_4];
 qc1 = [q_1 ; q_2 ; q_3 ; q_4];
 
-for i = 1:6031
+for i = 1:36
     
 %Clohessy-Wiltshire (CW) equations
 drr = [4-3*cos(n*dt) 0 0 ; 6*(sin(n)-n*dt) 1 0 ; 0 0 cos(n*dt)];
@@ -63,7 +63,7 @@ thq(:,i) = [thq_1(i) ; thq_2(i) ; thq_3(i) ; thq_4(i)];
 
 %kinematic quaternion equations
 dq(:,i) =  [0 w(3) -w(2) w(1) ; -w(3) 0 w(1) w(2) ; w(2) -w(1) 0 w(3) ; -w(1) -w(2) -w(3) 0]*q(:,i)/2;% + n * [q(3,i) ; q(4,i) ; -q(1,i) ; -q(2,i)]/2;
-q(:,i+1) = q(:,i) + dq(:,i)*dt;
+q(:,i+1) = (q(:,i) + dq(:,i)*dt)/norm(q(:,i));
 
 dqc1(:,i) =  [qc1(4,i) -qc1(3,i) qc1(2,i) qc1(1,i) ; qc1(3,i) qc1(4,i) -qc1(1,i) qc1(2,i) ; -qc1(2,i) qc1(1,i) qc1(4,i) qc1(3,i) ; -qc1(1,i) -qc1(2,i) -qc1(3,i) qc1(4,i)]*[w ; 0]/2 + n * [q(3,i) ; q(4,i) ; -q(1,i) ; -q(2,i)]/2;
 qc1(:,i+1) = qc1(:,i) + dqc1(:,i)*dt;
@@ -72,10 +72,11 @@ end
 
 %graphs
 figure; plot(x(1,:)); hold on; plot(x(2,:)); plot(x(3,:)); legend('x','y','z'); 
+figure; plot(x(4,:)); hold on; plot(x(5,:)); plot(x(6,:)); legend('x','y','z'); 
 figure; plot(x(7,:)); hold on; plot(x(8,:)); plot(x(9,:)); legend('roll','pitch','yaw'); 
 figure; plot(thq(1,:)); hold on; plot(thq(2,:)); plot(thq(3,:)); plot(thq(4,:)); legend('thq1','thq2','thq3','thq4'); 
 figure; plot(q(1,:)); hold on; plot(q(2,:)); plot(q(3,:)); plot(q(4,:)); legend('q1','q2','q3','q4'); 
-figure; plot(qc1(1,:)); hold on; plot(qc1(2,:)); plot(qc1(3,:)); plot(qc1(4,:)); legend('qc1','qc2','qc3','qc4'); 
+%figure; plot(qc1(1,:)); hold on; plot(qc1(2,:)); plot(qc1(3,:)); plot(qc1(4,:)); legend('qc1','qc2','qc3','qc4'); 
 
 
 %kinematic quaternion equations
