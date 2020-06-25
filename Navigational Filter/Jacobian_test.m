@@ -17,4 +17,4 @@ x = [Tc; zeros(3,1); quat; w];
 fx = 3.9*10^-3;
 fy = 3.9*10^-3;
 n = 16;
-H = Jacobian(n,x, fx, fy,wireframe);
+H = Jacobian(n,x, fx, fy,wirefrmaar voor nu isame);
