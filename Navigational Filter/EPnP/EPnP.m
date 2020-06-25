@@ -1,4 +1,4 @@
-function [Xc, Tc, R, euler, quat] = EPnP(wireframe,datapoints,std_noise)
+function [Xc, Tc, R, euler, quat] = EPnP(wireframe,datapoints)
 % Inputs
 % wireframe: wireframe in meters
 % datapoints: datapoints of the measurement in pixels
@@ -13,7 +13,7 @@ function [Xc, Tc, R, euler, quat] = EPnP(wireframe,datapoints,std_noise)
 % of the target satellite
 % euler: Euler angles that form R in radians
 % quat: quaternions that form R
-[x3d_h,x2d_h,A]=EPnP_data(wireframe,datapoints,std_noise);
+[x3d_h,x2d_h,A]=EPnP_data(wireframe,datapoints);
 [R,Tc,Xc,best_solution]=efficient_pnp(x3d_h,x2d_h,A);
 euler=rotm2eul(R);
 quat=[sin(euler(1)/2)*cos(euler(2)/2)*cos(euler(3)/2)-cos(euler(1)/2)*sin(euler(2)/2)*sin(euler(3)/2); 
