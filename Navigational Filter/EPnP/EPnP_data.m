@@ -1,4 +1,4 @@
-function [x3d_h,x2d_h,A] = EPnP_data(wireframe,datapoints,std_noise)
+function [x3d_h,x2d_h,A] = EPnP_data(wireframe,z)
     % The input:
     % Wireframe should be in meters
     % Datapoints are in pixels
@@ -19,9 +19,9 @@ function [x3d_h,x2d_h,A] = EPnP_data(wireframe,datapoints,std_noise)
     n = length(wireframe); % Should be 16
     for i=1:n
         x3d_h(i,:)=[wireframe(:,i)', 1]; % feature points
-        noise=randn(1,2)*std_noise;
-        img_data = [0.5*datapoints(1,2*i-1)+128, 0.5*datapoints(1,2*i)+128]+noise; % The 0.5* and +128 are necessary to correct for perspective distortion
-        img_data_noise = pixel_size*img_data;
-        x2d_h(i,:) = [img_data_noise, 1]; % measurements
+%        noise=randn(1,2)*std_noise;
+%        img_data = [0.5*datapoints(1,2*i-1)+128, 0.5*datapoints(1,2*i)+128]+noise; % The 0.5* and +128 are necessary to correct for perspective distortion
+%        img_data_noise = pixel_size*img_data;
+        x2d_h(i,:) = [z(2*i-1) z(2*i) 1]; % measurements
     end
 end
