@@ -4,14 +4,21 @@
 %Jacobian_test = Jacobian1(16, test_state, 3.9e-3, 3.9e-3)
 
 function J = Jacobian(n,state_vector, fx, fy,wireframe)
+% This function gives back the Jacobian and takes as input the state_vector
+% for timestep t, n the number of featurepoints, fx and fy as the focal
+% length of the camera and the wireframe in meters. It first calculates the
+% rotation matrix so that it can transform all featurepoints into the
+% camera frame. After that it calculates the derivative with respect to
+% position and the derivative of quaternions wrt quaternions
     vectorJacobian = zeros(2*n, 3);
-    quaternionJacobian = zeros(2*n, 3);
+    quaternionJacobian = zeros(2*n, 4);
     for i = 1:n
-        H = H_int(fx, fy, wireframe(1,i)+state_vector(1), wireframe(2,i)+state_vector(2), wireframe(3,i)+state_vector(3));
-        vectorJacobian(i*2-1:i*2,1:3) = H;
         q = state_vector(7:10);
-        H_q = H*H_ext(q);
-        quaternionJacobian(i*2-1:i*2,1:3) = H_q;
+        xyz = R_quat(q)*wireframe(:,i)+state_vector(1:3);
+        H = H_int(fx, fy, xyz(1), xyz(2), xyz(3));
+        vectorJacobian(i*2-1:i*2,1:3) = H;
+        H_q = H*dH_dq(q,xyz);
+        quaternionJacobian(i*2-1:i*2,1:4) = H_q;
     end
     J = [vectorJacobian, zeros(2*n, 3), quaternionJacobian, zeros(2*n, 3)];
 end
