@@ -15,9 +15,9 @@ n = sqrt(mu/(a^3));
 
 %initialization
 w = [-0.0873 ; -0.1489 ; 0.0262]; %rad/s, given parameter: constant angular velocity
-th_0 = [-170 ; 30 ; -80]; %deg, given parameter: initial Euler angles
+th_0 = [-180 ; 30 ; -80]; %deg, given parameter: initial Euler angles
 th = th_0*pi/180; %rad
-x_pos = [-0.0019 ; 0.0017 ; 1.0891 ; 0 ; 0 ; 0]; %m, initial position taken from measurements [r ; v]
+x_pos = [0 ; 150 ; 0 ; 0 ; 0 ; 0]; %m, initial position taken from measurements [r ; v]
 
 x_att = [th ; w];
 x = [x_pos ; x_att];
