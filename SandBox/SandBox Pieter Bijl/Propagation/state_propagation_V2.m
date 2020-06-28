@@ -6,7 +6,7 @@ H_target = 773000;
 a = R_earth + H_target;
 n = sqrt(mu/(a^3));
 
-euler_initial = deg2rad([-180 30 -80]);
+euler_initial = deg2rad([-170 30 -80]);
 quat_initial = eul2quat(euler_initial,'ZYX');
 %x0 = [0;150;0;0;0;0;quat_initial';0*-0.0862;    -0.1496;   0.000];
 x0 = [0;150;0;0;0;0;quat_initial';-0.0873;-0.1489;0.0262];
