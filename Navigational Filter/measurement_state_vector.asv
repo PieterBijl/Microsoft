@@ -18,6 +18,7 @@ end
 figure
 plot(x_EPnP(7,:))
 hold on
+title("measurements in quaternions")
 plot(x_EPnP(8,:))
 plot(x_EPnP(9,:))
 plot(x_EPnP(10,:))
@@ -25,5 +26,13 @@ plot(x_EPnP(10,:))
 figure
 plot(x_EPnP_Euler_deg(7,:))
 hold on
+title("measurements in Euler angles")
 plot(x_EPnP_Euler_deg(8,:))
 plot(x_EPnP_Euler_deg(9,:))
+
+%% find omega
+q1 = x_EPnP(7:10,2)
+q0 = x_EPnP(7:10,1)
+
+q_omega_dt = quatdivide(q0',q)/36
+omega = quat2eul(q_omega_dt,'ZYX')
