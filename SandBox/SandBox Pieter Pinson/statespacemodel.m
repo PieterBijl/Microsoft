@@ -65,7 +65,7 @@ thq(:,i) = [thq_1(i) ; thq_2(i) ; thq_3(i) ; thq_4(i)];
 dq(:,i) =  [0 w(3) -w(2) w(1) ; -w(3) 0 w(1) w(2) ; w(2) -w(1) 0 w(3) ; -w(1) -w(2) -w(3) 0]*q(:,i)/2;% + n * [q(3,i) ; q(4,i) ; -q(1,i) ; -q(2,i)]/2;
 q(:,i+1) = (q(:,i) + dq(:,i)*dt)/norm(q(:,i));
 
-dqc1(:,i) =  [qc1(4,i) -qc1(3,i) qc1(2,i) qc1(1,i) ; qc1(3,i) qc1(4,i) -qc1(1,i) qc1(2,i) ; -qc1(2,i) qc1(1,i) qc1(4,i) qc1(3,i) ; -qc1(1,i) -qc1(2,i) -qc1(3,i) qc1(4,i)]*[w ; 0]/2 + n * [q(3,i) ; q(4,i) ; -q(1,i) ; -q(2,i)]/2;
+dqc1(:,i) =  [qc1(4,i) -qc1(3,i) qc1(2,i) qc1(1,i) ; qc1(3,i) qc1(4,i) -qc1(1,i) qc1(2,i) ; -qc1(2,i) qc1(1,i) qc1(4,i) qc1(3,i) ; -qc1(1,i) -qc1(2,i) -qc1(3,i) qc1(4,i)]*[w ; 0]/2;% + n * [q(3,i) ; q(4,i) ; -q(1,i) ; -q(2,i)]/2;
 qc1(:,i+1) = qc1(:,i) + dqc1(:,i)*dt;
 
 end
