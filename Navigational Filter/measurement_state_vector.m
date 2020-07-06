@@ -34,5 +34,5 @@ plot(x_EPnP_Euler_deg(9,:))
 q1 = x_EPnP(7:10,2)
 q0 = x_EPnP(7:10,1)
 
-q_omega_dt = quatdivide(q1',q0')
+q_omega_dt = quatdivide(q0',q1')
 omega = quat2eul(q_omega_dt,'XYZ')
