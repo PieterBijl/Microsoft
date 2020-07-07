@@ -25,5 +25,6 @@ x2d_h=zeros(n,3);
         x2d_h(j,2) = feature_data(i,2*j);
         x2d_h(j,3) = 1;
     end
+    x(1,i) = i;
     x(2:14,i) = EPnP2state_vector(x3d_h,x2d_h,A);
 end
