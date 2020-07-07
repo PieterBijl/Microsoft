@@ -28,3 +28,18 @@ x2d_h=zeros(n,3);
     x(1,i) = i;
     x(2:14,i) = EPnP2state_vector(x3d_h,x2d_h,A);
 end
+
+%% Featuredata
+feature_data_extended = zeros(33,length(feature_data));
+for i=1:length(feature_data)
+    feature_data_extended(1,i) = i;
+    feature_data_extended(2:33,i) = feature_data(i,:)';
+end
+
+%%
+figure;
+plot(x(7,1:100))
+hold on
+plot(x(8,1:100))
+plot(x(9,1:100))
+plot(x(10,1:100))
