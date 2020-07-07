@@ -3,9 +3,9 @@ clc
 
 addpath EPnP;
 
-feature_data = importdata('features_data.txt'); %in pixels
+feature_data = importdata('features_data_extended.txt'); %in pixels
 feature_points = 1/100*importdata('feature_points.txt'); %in meters
-measurement_number = 5;
+measurement_number = 1;
 n = 16;
 u0 = 256;
 v0 = 256;
