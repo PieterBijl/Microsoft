@@ -22,6 +22,8 @@ x3d_image(:,4) = 1;
 width = 512; height = 512; % 512x512 pixels
 u0 = 256; v0 = 256; % optical center
 f = 3.9 * 10^-3; % focal length [m]
+pixel_size = 1.1e-5;
+fx1 = f/pixel_size;
 fx = 709.09; fy = 709.09;
 
 
