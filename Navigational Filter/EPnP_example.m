@@ -13,14 +13,17 @@ fx = 2*3.9*10^-3;
 fy = fx;
 m = 1.1*10^-5;
 A=[fx/m 0 u0; 0 fy/m v0; 0 0 1];
-x3d_h=zeros(n,4);
-x2d_h=zeros(n,3); 
-for i=1:n
-    x3d_h(i,1:3) = feature_points(:,i)';
-    x3d_h(i,4) = 1;
-    x2d_h(i,1) = feature_data(measurement_number,2*i-1);
-    x2d_h(i,2) = feature_data(measurement_number,2*i);
-    x2d_h(i,3) = 1;
-end
 
-x = EPnP2state_vector(x3d_h,x2d_h,A)
+x = zeros(14,length(feature_data));
+for i=1:length(feature_data)
+    x3d_h=zeros(n,4);
+x2d_h=zeros(n,3); 
+    for j=1:n
+        x3d_h(j,1:3) = feature_points(:,j)';
+        x3d_h(j,4) = 1;
+        x2d_h(j,1) = feature_data(i,2*j-1);
+        x2d_h(j,2) = feature_data(i,2*j);
+        x2d_h(j,3) = 1;
+    end
+    x(2:14,i) = EPnP2state_vector(x3d_h,x2d_h,A);
+end
