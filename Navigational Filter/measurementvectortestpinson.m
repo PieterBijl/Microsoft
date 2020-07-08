@@ -1,13 +1,14 @@
-clc;
-clear all;
+clear all
+clc
 
-addpath data;
-addpath error;
 addpath EPnP;
 
 feature_data = importdata('features_data.txt'); %in pixels
 feature_points = 1/100*importdata('feature_points.txt'); %in meters
-measurement_number = ;
+
+%x(:,1) = [-0.0019; 0.0017; 151.0891; 0; 0; 0; 0.1670; 0.1989; 0.6204; -0.7400 ;-0.0873; -0.1489; 0.0262];
+
+for measurement_number = 1:36
 n = 16;
 u0 = 256;
 v0 = 256;
@@ -25,5 +26,5 @@ for i=1:n
     x2d_h(i,3) = 1;
 end
 
-[Rp,Tp,Xc,sol]=efficient_pnp(x3d_h,x2d_h,A);
-rad2deg(rotm2eul(Rp))
+x(:,measurement_number) = EPnP2state_vector(x3d_h,x2d_h,A);
+end
