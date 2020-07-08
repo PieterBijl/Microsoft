@@ -1,4 +1,3 @@
-clear all
 
 mu = 3.986*10^14;
 R_earth = 6371000;
@@ -12,7 +11,7 @@ quat_initial = eul2quat(euler_initial,'ZYX');
 x0 = [0;150;0;0;0;0;quat_initial';-0.0873;-0.1489;0.0262];
 x(:,1) = x0;
 euler(:,1) = quat2eul(x(7:10,1)','ZYX')';
-t_sim = 36;
+t_sim = 200;
 dt = 1;
 t = 0;
 for i =1:(t_sim/dt)
@@ -40,9 +39,13 @@ plot(x(8,:))
 plot(x(9,:))
 plot(x(10,:))
 
+%% Euler
 figure;
 plot(euler(1,:))
 hold on
 title("Propagation in Euler angles")
 plot(euler(2,:))
 plot(euler(3,:))
+plot(euler_test(1,1:200))
+plot(euler_test(2,1:200))
+plot(euler_test(3,1:200))
