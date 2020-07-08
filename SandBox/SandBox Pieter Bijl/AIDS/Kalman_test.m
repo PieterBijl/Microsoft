@@ -28,8 +28,8 @@ q = rotm2quat(Rp);
 eul_ver = rad2deg(quat2eul(q));
 x = [Tp(1); Tp(3); Tp(2); 0.001; 0.001; 0.001; q(1); q(2); q(3); q(4); -0.0873; -0.1489; 0.0262];
 Q = 0;
-p_1 = 1/1000*eye(13,13);
-[x_k_1,p_k_1] = prediction(x,Q,p_1);
+p_1 = eye(13,13);
+[x_k_1,p_k_1,phi] = prediction(x,Q,p_1,1);
 eul_ver_2 = rad2deg(quat2eul(x_k_1(7:10)'));
 
 %% Jacobian

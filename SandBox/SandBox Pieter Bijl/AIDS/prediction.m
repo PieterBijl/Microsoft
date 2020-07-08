@@ -1,4 +1,4 @@
-function [x_k_1,p_k_1]= prediction(x_1,Q,p_1)
+function [x_k_1,p_k_1,fi]= prediction(x_1,Q,p_1,t)
 
 %x_k_1 = x_1;
 
@@ -10,9 +10,8 @@ a = R_earth + H_target;
 n = sqrt(mu/(a^3));
 
 %clohessy-wiltshire equations
-dr = [4-3*cos(n) 0 0 sin(n)/n 2*(1-cos(n))/n 0 ; 6*(sin(n)-n) 1 0 2*(cos(n)-1)/n (4*sin(n)-3*n)/n 0 ; 0 0 cos(n) 0 0 sin(n)/n];
-dv = [3*n*sin(n) 0 0 cos(n) 2*sin(n) 0 ; 6*n*(cos(n)-1) 0 0 -2*sin(n) 4*cos(n)-3 0 ; 0 0 -n*sin(n) 0 0 cos(n)];
-%phi = [dr;dv];
+dr = [4-3*cos(n*t) 0 0 sin(n*t)/n 2*(1-cos(n*t))/n 0 ; 6*(sin(n*t)-n*t) 1 0 2*(cos(n*t)-1)/n (4*sin(n*t)-3*n*t)/n 0 ; 0 0 cos(n*t) 0 0 sin(n*t)/n];
+dv = [3*n*sin(n*t) 0 0 cos(n*t) 2*sin(n*t) 0 ; 6*n*(cos(n*t)-1) 0 0 -2*sin(n*t) 4*cos(n*t)-3 0 ; 0 0 -n*sin(n*t) 0 0 cos(n*t)];
 
 %quaternion kinematic equation
 %dq = 0.5*[0 x_1(13) -x_1(12) x_1(11) ; -x_1(13) 0 x_1(11) x_1(12) ; x_1(12) -x_1(11) 0 x_1(13) ; -x_1(11) -x_1(12) -x_1(13) 0];
