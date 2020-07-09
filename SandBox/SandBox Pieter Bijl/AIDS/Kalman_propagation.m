@@ -1,4 +1,5 @@
 clear all
+close all
 
 addpath Jacobian
 
@@ -13,7 +14,7 @@ fx = 2*3.9*10^-3;
 fy = fx;
 m = 1.1*10^-5;
 A=[fx/m 0 u0; 0 fy/m v0; 0 0 1];
-t_end = 1000;
+t_end = 3000;
 std_noise = 0;
 
 x3d_h=zeros(n,4);
@@ -28,16 +29,6 @@ end
 [Rp,Tp,Xc,sol]=efficient_pnp(x3d_h,x2d_h,A);
 q = rotm2quat(Rp);
 eul_ver = rad2deg(quat2eul(q));
-% x0 = [Tp(1); Tp(3); Tp(2); 0.001; 0.001; 0.001; q(1); q(2); q(3); q(4); -0.0873; -0.1489; 0.0262];
-x0 = [Tp(1); Tp(3); Tp(2); 0.001; 0.001; 0.001; q(1); q(2); q(3); q(4); -0.0873; -0.1489; 0.0262];
-R = eye(32,32)*2*m;
-Q = 0;
-v = 1/100*[1, 100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-% p = diag(v);
-p = 0.1*diag([10,100,10,0,0,0,0.5,0.5,0.5,0.5,0.1,0.1,0.1]);
-x(:,1) = x0;
-% eul_ver = zeros(3,t_end);
-% eul_ver(:,1) = rad2deg(quat2eul(x(7:10,1)'))';
 
 %% Get the 'real values'
 x_real = zeros(13,length(feature_data));
@@ -61,6 +52,20 @@ for i=1:length(feature_data)
    x_real(7:10,i) = eul2quat(deg2rad(euler_real(:,i)'));
    euler_real(:,i) = rad2deg(quat2eul(x_real(7:10,i)'))';
 end
+%% Set up Kalman shit
+% x0 = [Tp(1); Tp(3); Tp(2); 0.001; 0.001; 0.001; q(1); q(2); q(3); q(4); -0.0873; -0.1489; 0.0262];
+x0 = [Tp(1); Tp(3)+3; Tp(2); 0.; 0.00; 0.00; q(1); q(2); q(3); q(4); -0.0873; -0.1489; 0.0262];
+R = eye(32,32)*2*m;
+% Q = eye(13,13)*10^-7;
+v = [0.,0,0.,0,0.,0.,10^-3,10^-3,10^-3,10^-3,0,0,0];
+Q = 10^-6*diag([10^-3,10^-3,10^-3,10^-3,10^-3,10^-3,1,1,1,1,0.1,0.1,0.1]);
+%Q = 10^-6*eye(13,13);
+% v = [1.00000429256958,9.99999995855528,1.00000072378800,8.00052682336010e-07,1.10333998199943e-07,0,0.0499939902387247,0.0500019375799947,0.0499965116814140,0.0499945356882570,0.0100000000000000,0.0100000000000000,0.0100000000000000];
+% p = diag(v);
+p = 10^-2*diag(v);
+x(:,1) = x0;
+% eul_ver = zeros(3,t_end);
+% eul_ver(:,1) = rad2deg(quat2eul(x(7:10,1)'))';
 
 %% Do the calculations
 e_t = zeros(3,t_end); % error matrix for the three translations
@@ -126,3 +131,13 @@ subplot(2,2,4)
 plot(x(10,:))
 hold on
 plot(x_real(10,1:t_end))
+
+%% Plotting Translation
+figure;
+plot(x(1,:))
+hold on
+plot(x_real(1,1:t_end))
+plot(x(2,:))
+plot(x_real(2,1:t_end))
+plot(x(3,:))
+plot(x_real(3,1:t_end))
