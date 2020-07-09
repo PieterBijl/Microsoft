@@ -1,4 +1,4 @@
-function f = kalman_optimizer(v)
+function f = kalman_optimizer(v_t)
     addpath Jacobian
 
     feature_data = importdata('features_data_extended.txt'); %in pixels
@@ -31,7 +31,7 @@ function f = kalman_optimizer(v)
     x0 = [Tp(1); Tp(3); Tp(2); 0.001; 0.001; 0.001; q(1); q(2); q(3); q(4); -0.0873; -0.1489; 0.0262];
     R = eye(32,32)*2*m;
     Q = 0;
-    %v = 1/100*[1, 100, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+    v = 1/10*[v_t(1), v_t(2), v_t(3), 0,0,0,0.5,0.5,0.5,0.5,0.1,0.1,0.1];
     % p = diag(v);
     %p = 0.1*diag([10,100,10,0,0,0,0.5,0.5,0.5,0.5,0.1,0.1,0.1]);
     p = diag(v);
@@ -40,27 +40,8 @@ function f = kalman_optimizer(v)
     % eul_ver(:,1) = rad2deg(quat2eul(x(7:10,1)'))';
 
     %% Get the 'real values'
-    x_real = zeros(13,length(feature_data));
-    for i=1:length(feature_data)
-        x3d_h=zeros(n,4);
-    x2d_h=zeros(n,3); 
-        for j=1:n
-            x3d_h(j,1:3) = feature_points(:,j)';
-            x3d_h(j,4) = 1;
-            x2d_h(j,1) = feature_data(i,2*j-1);
-            x2d_h(j,2) = feature_data(i,2*j);
-            x2d_h(j,3) = 1;
-        end
-        x_real(1:13,i) = EPnP2state_vector(x3d_h,x2d_h,A);
-    end
-
-    euler_real = zeros(3,length(feature_data));
-    for i=1:length(feature_data)
-       euler_real(:,i) = round(rad2deg(quat2eul(x_real(7:10,i)')));
-       euler_real(1,i) = -180+(i-1)*10;
-       x_real(7:10,i) = eul2quat(deg2rad(euler_real(:,i)'));
-       euler_real(:,i) = rad2deg(quat2eul(x_real(7:10,i)'))';
-    end
+    load('euler_real.mat')
+    load('x_real.mat')
 
     %% Do the calculations
     e_t = zeros(3,t_end); % error matrix for the three translations
