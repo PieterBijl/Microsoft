@@ -14,6 +14,8 @@ fy = fx;
 m = 1.1*10^-5;
 A=[fx/m 0 u0; 0 fy/m v0; 0 0 1];
 
+
+
 x = zeros(14,length(feature_data));
 for i=1:length(feature_data)
     x3d_h=zeros(n,4);
@@ -35,11 +37,11 @@ for i=1:length(feature_data)
     feature_data_extended(1,i) = i;
     feature_data_extended(2:33,i) = feature_data(i,:)';
 end
-
 %%
 figure;
-plot(x(7,1:100))
+%plot(x(7,1:100))
 hold on
 plot(x(8,1:100))
 plot(x(9,1:100))
 plot(x(10,1:100))
+plot(x(11,1:100))
