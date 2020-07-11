@@ -1,5 +1,5 @@
 
-n = 1000;
+n = 6012;
 
 angles = linspace(0, 2*pi, n);
 bools = ones(1, n);
