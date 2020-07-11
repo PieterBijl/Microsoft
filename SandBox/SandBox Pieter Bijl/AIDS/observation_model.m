@@ -7,7 +7,9 @@ function h = observation_model(state,wireframe)
     R = quat2rotm(q');
     n = 16;
     for i=1:n
-        xyz = R*wireframe(:,i)+[state(1); state(3); state(2)];
+%         xyz = R*wireframe(:,i)+[state(1); state(3); state(2)];
+        xyz = R*wireframe(:,i);%[state_vector(1); state_vector(3); state_vector(2)];
+        xyz = [xyz(1)+state(1); xyz(3) + state(3); xyz(2) + state(2)];
         h(2*i-1,1) = xyz(1)/xyz(3)*fx+256*pixel_size;
         h(2*i,1) = xyz(2)/xyz(3)*fy+256*pixel_size;
     end
