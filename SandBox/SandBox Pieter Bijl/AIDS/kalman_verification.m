@@ -32,7 +32,7 @@ for j=1:n
 end
 [Rp,Tp,Xc,sol]=efficient_pnp(x3d_h,x2d_h,A);
 q = rotm2quat(Rp);
-x0 = [Tp(1); 150; Tp(2); 0.001; 0.001; 0.001; q(1); q(2); q(3); q(4); -0.0873; -0.1489; 0.0262];
+x0 = [Tp(1); Tp(3); Tp(2); 0.001; 0.001; 0.001; q(1); q(2); q(3); q(4); -0.0873; -0.1489; 0.0262];
 
 %% Kalman Propagation
 t_end = 6000;
@@ -44,7 +44,8 @@ end
 x_diff = abs(x0-x_real(:,1));
 p0 = abs(x_diff);%x_diff.*x_diff;
 % p0(1:3) = 10*p0(1:3);
-p = diag(p0');
+% p = diag(p0');
+p = diag(x0.*x0);%0.1*diag([1,100,1,0,0,0,0.5,0.5,0.5,0.5,-0.1,-0.1,0.1]);
 Q = 10^-6*eye(13,13);
 x = zeros(13,t_end);
 x(:,1) = x0;

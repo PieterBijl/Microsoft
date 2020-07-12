@@ -5,7 +5,7 @@
 n = 1000;   % Number of points for the plot
 
 % Create data for plotting
-angles = linspace(0, 2*pi, n);  
+angles = linspace(0, 2*pi, n);
 bools = ones(1, n);
 stds = ones(1, n);
 
@@ -19,7 +19,7 @@ noise = bools.*stds;
 figure
 hold on
 plot(angles/pi*180, bools,'--')
-plot(angles/pi*180, stds,'--') 
+plot(angles/pi*180, stds,'--')
 plot(angles/pi*180, noise)% '--', '--', '-')
 ylim([0 7])
 xlim([0 360])
@@ -36,7 +36,7 @@ legend("Noise Boolean", "Noise Magnitude", "Noise Estimation", "Location", "Nort
 %     else
 %         n(i) = n0 / cos(i/180*pi);
 %     end
-%     
+%
 % end
-% 
+%
 % plot(n)
