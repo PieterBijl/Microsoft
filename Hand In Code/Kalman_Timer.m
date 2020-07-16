@@ -1,3 +1,9 @@
+% This file was created to assess the computational effort it would take to
+% use the proposed navigational filter using the Extended Kalman Filter.
+% The calculations shown here are not exactly the same as the ones used in
+% the Simulink Filter and should not be used there. The folders Jacobian and
+% EPnP are used by this script.
+
 clear all
 close all
 
@@ -40,59 +46,27 @@ R = std_noise*eye(32,32);
 x_diff = abs(x0-x_real(:,1));
 p0 = abs(x_diff);
 p = diag(p0');
-% p(2) = -1*p(2);
 Q = 10^-6*diag([1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1]);
 x = zeros(13,t_end);
 x(:,1) = x0;
-plot_on = 1;
 
+tic
 for i=1:t_end-1
-    [x_p_1(:,i),phi] = prediction_test(x(:,i),i);
-    x_p_k_1(:,i) = [x_p_1(1,i); x_p_1(3,i); x_p_1(2,i); x_p_1(4:13,i)];
+    [x_p_1,phi] = prediction_test(x(:,i),i);
+    x_p_k_1 = [x_p_1(1); x_p_1(3); x_p_1(2); x_p_1(4:13)];
     p_k = phi * p * phi' + Q;
-    z(:,i) = m*(feature_data(i+1,:)'+std_noise*randn(32,1));
-    H = Jacobian(n,x_p_k_1(:,i), fx, fy,feature_points);
-    h(:,i) = observation_model(x_p_k_1(:,i),feature_points);
+    z = m*(feature_data(i+1,:)'+std_noise*randn(32,1));
+    H = Jacobian(n,x_p_k_1, fx, fy,feature_points);
+    h = observation_model(x_p_k_1,feature_points);
 
     %kalman gain calculation
     K = p_k * H' * inv(H * p_k * H' + R);
 
     %correction step
-    y(:,i) = z(:,i) - h(:,i);
-    x_k(:,i) = K*y(:,i);
-    x(:,i+1) = x_p_k_1(:,i) + x_k(:,i);
+    y = z - h;
+    x_k = K*y;
+    x(:,i+1) = x_p_k_1 + x_k;
     x(:,i+1) = [x(1,i+1); x(3,i+1); x(2,i+1); x(4:13,i+1)];
-%     eul_ver(:,i+1) = rad2deg(quat2eul(x(7:10,i)'))';
     p = (eye(13,13) - K*H)*p_k;
 end
-
-if plot_on ==1
-    %% Plotting Quaternions
-    figure;
-    subplot(2,2,1)
-    plot(x(7,:))
-    hold on
-    plot(x_real(7,1:t_end))
-    subplot(2,2,2)
-    plot(x(8,:))
-    hold on
-    plot(x_real(8,1:t_end))
-    subplot(2,2,3)
-    plot(x(9,:))
-    hold on
-    plot(x_real(9,1:t_end))
-    subplot(2,2,4)
-    plot(x(10,:))
-    hold on
-    plot(x_real(10,1:t_end))
-
-    %% Plotting Translation
-    figure;
-    plot(x(1,:))
-    hold on
-    plot(x_real(1,1:t_end))
-    plot(x(2,:))
-    plot(x_real(2,1:t_end))
-    plot(x(3,:))
-    plot(x_real(3,1:t_end))
-end
+toc
